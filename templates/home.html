@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+    {% block title %}Home{% endblock %}
+ {% block cssfile %}
+<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+  {% endblock %}
+{% block content %}
+    <section>
+        <div id="typing-container">
+    <span id="typed-text"></span><span class="cursor">|</span>
+        </div>
+
+    <img class="mountain" src="https://i.ibb.co/Hp6Lf3j/Mountains.png" alt='Mountain' />
+    <img class="river" src="https://i.ibb.co/cyyyGKV/River.png" alt='river'>
+    <img class="trees" src="https://i.ibb.co/8c1QLtW/trees.png" alt="trees" />
+    <img class="sun" src="https://i.ibb.co/1bY37MD/Sun.png" alt="sun" />
+
+    </section>
+
+
+    <script>
+
+        var animation = anime.timeline({
+  easing: "easeOutExpo",
+  delay:"200:"
+});
+
+animation.add({
+  targets: ".mountain",
+  bottom: 0,
+  duration: "3000"
+});
+animation.add({
+  targets: ".trees",
+  bottom: 0,
+  duration: "3000",
+});
+
+animation.add({
+  targets: ".river",
+  bottom: 0,
+  duration: "2500"
+});
+animation.add({
+  targets: ".sun",
+  bottom: 0,
+  duration: "1500"
+}).finished.then(() => {
+            console.log("Animation complete, starting typing effect...");
+            document.getElementById("typing-container").style.visibility = "visible"; // Show text
+            startTyping(); // Start typing effect
+        });
+
+const textArray = ["Welcome to Our Site!", "Unlock a hands-free experience—control tools with simple gestures!", "Have any queries? Ask our chatbot! It’s here to help."];
+let textIndex = 0;
+let charIndex = 0;
+
+function startTyping() {
+    let textElement = document.getElementById("typed-text");
+    textElement.innerHTML = ""; // Clear previous text
+    charIndex = 0;
+    typeText();
+}
+
+function typeText() {
+    let textElement = document.getElementById("typed-text");
+    let text = textArray[textIndex];
+
+    if (charIndex < text.length) {
+        textElement.innerHTML += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeText, 100);
+    } else {
+        setTimeout(eraseText, 1500);
+    }
+}
+
+function eraseText() {
+    let textElement = document.getElementById("typed-text");
+    if (textElement.innerHTML.length > 0) {
+        textElement.innerHTML = textElement.innerHTML.slice(0, -1);
+        setTimeout(eraseText, 50);
+    } else {
+        textIndex = (textIndex + 1) % textArray.length;
+        setTimeout(startTyping, 500);
+    }
+}
+    </script>
+{% endblock %}

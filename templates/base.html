@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+  {% block cssfile %}
+
+  {% endblock %}
+
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="/">Home</a>
+        </div>
+
+        <div class="center-nav">
+            <a href="/tools">Tools</a>
+            <a href="/chatbot">Chatbot</a>
+            <a href="/help">Help</a>
+        </div>
+
+        <div class="auth-buttons">
+            <a id="login" href="/login">Login</a>
+            <a id="signup" href="/signup">Sign Up</a>
+            <button id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
+        </div>
+    </div>
+
+    <div class="content">
+        {% block content %}
+        <!-- Page-specific content will be inserted here -->
+        {% endblock %}
+    </div>
+<script>
+    window.onload = function() {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            document.getElementById('logoutBtn').style.display = 'block';
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('signup').style.display = 'none';
+        } else {
+            document.getElementById('logoutBtn').style.display = 'none';
+        }
+    };
+
+    // Function to logout the user
+    function logout() {
+        // Remove JWT token from localStorage
+        localStorage.removeItem('authToken');
+
+        // Redirect to login page
+        window.location.href = '/login';
+    }
+</script>
+
+
+</body>
+
+</html>

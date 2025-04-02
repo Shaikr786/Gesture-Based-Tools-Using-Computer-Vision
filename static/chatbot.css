@@ -1,0 +1,112 @@
+body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+
+        }
+        .content{
+         margin-top:120px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+             animation: borderGlow 2s linear infinite;
+        }
+        @keyframes borderGlow {
+    0% {
+        box-shadow: 0 0 20px 0px rgba(0, 204, 255, 0.9);  /* Increased size and opacity */
+    }
+    50% {
+        box-shadow: 0 0 40px 10px rgba(0, 204, 255, 1), 0 0 60px 20px rgba(0, 204, 255, 0.7);  /* Stronger glow with more spread */
+    }
+    100% {
+        box-shadow: 0 0 20px 0px rgba(0, 204, 255, 0.9);  /* Returning to a powerful but soft glow */
+    }
+}
+
+        h1 {
+            text-align: center;
+
+             margin-bottom: 40px;
+    font-size: 2.5em;
+    color: #4681f4;
+            text-shadow: 0 0 10px #4681f4;
+
+        }
+
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            display: block; /* Ensures messages stack vertically */
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .message.user {
+            background-color: #d1e7ff;
+            color: #004085;
+            align-self: flex-end; /* Align user messages to the right */
+        }
+
+        .message.bot {
+            background-color: #d4edda;
+            color: #155724;
+            align-self: flex-start; /* Align bot messages to the left */
+        }
+
+        .message.bot.markdown {
+            white-space: pre-wrap;
+        }
+
+        .typing-indicator {
+            font-style: italic;
+            color: #999999;
+            align-self: flex-start; /* Align typing indicator to the left */
+        }
+
+        .input-group {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .input-group button {
+            padding: 10px 15px;
+            background-color: #0066cc;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .input-group button:hover {
+            background-color: #00ff00;
+        }
+

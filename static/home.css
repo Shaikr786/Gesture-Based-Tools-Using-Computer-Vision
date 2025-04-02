@@ -1,0 +1,74 @@
+ *,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: url("https://i.ibb.co/kGwBfGJ/Background.png") no-repeat
+    center/cover;
+  overflow: hidden;
+}
+section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+img {
+  width: 100%;
+  object-fit: fill;
+}
+
+.mountain {
+  position: absolute;
+  bottom: -1000px;
+  z-index: 999;
+}
+.river {
+  z-index: 9;
+  position: absolute;
+  bottom: -600px;
+}
+.trees {
+  z-index: 999;
+  position: absolute;
+  bottom: -1000px;
+  height: 100%;
+}
+.sun {
+  object-fit: contain;
+  position: absolute;
+  z-index: 1;
+  bottom: -500px;
+}
+@media only screen and (max-width:650px){
+  .trees{
+    height:auto;
+  }
+}
+#typing-container {
+    position: absolute;
+    top: 25%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Precise centering */
+    font-size: 24px;
+    font-weight: bold;
+    color: black; /* Adjust color for visibility */
+    text-shadow: 0 0 20px #f1c40f; /* Shadow for better readability */
+    visibility: hidden; /* Initially hidden */
+    z-index: 1000;
+}
+
+.cursor {
+    display: inline-block;
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}

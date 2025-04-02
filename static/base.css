@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar Styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent; /* Semi-transparent black */
+    padding: 15px 30px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Center container for Tools, Chatbot, and Help */
+.center-nav {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Logo */
+.logo a {
+   display: inline-block;
+    background-color:#4681f4;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 18px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px #f1c40f;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: 3px solid #4681f4;
+}
+
+.logo a:hover {
+    background-color: #4681f4;
+    transform: scale(1.1);
+
+    color: black;
+}
+
+/* Navbar Links */
+.center-nav a {
+    display: inline-block;
+    background-color:#4681f4;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 18px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px #f1c40f;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: 3px solid #4681f4;
+}
+
+.center-nav a:hover {
+    background-color: #4681f4;
+    transform: scale(1.1);
+
+    color: black;
+}
+
+/* Authentication Buttons (Login, Sign Up, Logout) */
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.auth-buttons a{
+
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration:none;
+    box-shadow: 0 0 20px #f1c40f;
+    border: 3px solid  #4681f4 ;
+    background-color: #4681f4;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.auth-buttons a:hover{
+
+    background-color: #4681f4;
+    transform: scale(1.1);
+
+    color: black;
+}
+
+/* Logout Button */
+.auth-buttons #logoutBtn{
+
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 0 20px red;
+    border: 3px solid red;
+    background-color: red;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background-color: red;
+    transform: scale(1.1);
+
+    color:black;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .center-nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .auth-buttons {
+        margin-top: 10px;
+    }
+}

@@ -1,0 +1,132 @@
+
+
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+             background: #1a1a1a;
+
+
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width:vw;
+            padding: 0;
+            margin:0;
+
+
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 30px 80px;
+            border-radius: 50px;
+            border:2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+        }
+        .container:hover{
+        transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+
+        .page-title {
+            font-size: 28px;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .select-container {
+            margin-bottom: 30px;
+        }
+
+        select {
+            width: 200px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #f8f9fa;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        select:hover, select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            position: relative;
+
+        }
+
+        .card {
+            display: none;
+            width: 100%;
+            max-width: 350px;
+            background: #1a1a1a;
+            border-radius: 30px;
+            border:2px solid transparent;
+
+
+            padding: 20px;
+            animation: shadowBlink 4s infinite;
+
+            text-align: left;
+        }
+        @keyframes shadowBlink {
+          0% {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);  /* Increased size and opacity */
+    }
+    50% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 30px 10px rgba(255, 255, 255, 0.7);  /* Stronger glow with more spread */
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);  /* Returning to a powerful but soft glow */
+    }
+        }
+
+        .card h3 {
+            font-size: 22px;
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .card ul {
+            list-style-type: disc;
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .card li {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 10px;
+            opacity: 0;
+        }
+
+        .card.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card.hide {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .content{
+         margin-top:120px;
+        }
+        label{
+        color:white;
+        }

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+    {% block title %}Chatbot{% endblock %}
+
+    {% block cssfile %}
+<link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
+  {% endblock %}
+{% block content %}
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <div class="container">
+        <h1>ChatBot </h1>
+        <div id="chat-box" class="chat-box"  ></div>
+        <div class="input-group">
+            <input id="user-input" type="text" placeholder="Type your message..." />
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function getAuthToken() {
+            return localStorage.getItem('authToken');
+        }
+
+        // Redirect if user is not logged in
+        document.addEventListener("DOMContentLoaded", function() {
+            const token = getAuthToken();
+            if (!token) {
+
+                window.location.href = "/login";
+            }
+        });
+        const chatBox = document.getElementById("chat-box");
+        const userInput = document.getElementById("user-input");
+        const sendBtn = document.getElementById("send-btn");
+        const sessionId = "unique-session-id"; // Replace or dynamically generate as needed
+
+        // Function to append a bot message and display it with a typing effect
+        function appendMessageWithTyping(role, text, isMarkdown = false) {
+
+            const messageDiv = document.createElement("div");
+            messageDiv.className = `message ${role} ${isMarkdown ? "markdown" : ""}`;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            let index = 0;
+
+            function typeCharacter() {
+                if (index < text.length) {
+                    if (isMarkdown) {
+                        messageDiv.innerHTML = marked.parse(text.substring(0, index + 1));
+                    } else {
+                        messageDiv.textContent = text.substring(0, index + 1);
+                    }
+                    index++;
+                    setTimeout(typeCharacter, 20); // Adjust typing speed here (in ms)
+                }
+            }
+
+            typeCharacter();
+        }
+
+        // Handle sending user messages
+        async function handleUserMessage() {
+
+            const userMessage = userInput.value.trim();
+            if (!userMessage) return;
+
+            appendMessageWithTyping("user", userMessage); // Display user message
+            userInput.value = ""; // Clear input field
+
+            // Add typing indicator
+            const typingIndicator = document.createElement("div");
+            typingIndicator.className = "message bot typing-indicator";
+            typingIndicator.textContent = "Bot is typing...";
+            chatBox.appendChild(typingIndicator);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                // Send the user's message to the backend
+                const token = getAuthToken();
+                const response = await fetch("/get-bot-response", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json",
+                     'Authorization': `Bearer ${token}`
+                     },
+                    body: JSON.stringify({ message: userMessage }),
+                });
+
+                const data = await response.json();
+                chatBox.removeChild(typingIndicator); // Remove typing indicator
+
+                // Display bot response as Streamlit Markdown with typing effect
+                const botMessage = data.response;
+                appendMessageWithTyping("bot", botMessage, true);
+            } catch (error) {
+                chatBox.removeChild(typingIndicator); // Remove typing indicator
+                 appendMessageWithTyping("bot", error);
+                appendMessageWithTyping("bot", "Sorry, something went wrong.");
+            }
+        }
+
+        // Add event listener to the send button
+        sendBtn.addEventListener("click", handleUserMessage);
+
+        // Send message on pressing Enter
+        userInput.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                handleUserMessage();
+            }
+        });
+    </script>
+{% endblock %}

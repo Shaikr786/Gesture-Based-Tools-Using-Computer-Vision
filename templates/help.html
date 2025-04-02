@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+    {% block title %}Help{% endblock %}
+
+    {% block cssfile %}
+<link rel="stylesheet" href="{{ url_for('static', filename='help.css') }}">
+  {% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Help</h1>
+
+    <div class="select-container">
+        <label for="cardSelector"><b>Select the tool</b></label>
+        <select id="cardSelector">
+            <option value="1">PPT Controller</option>
+            <option value="2">Mouse</option>
+            <option value="3">Paint</option>
+            <option value="4">Keyboard</option>
+        </select>
+    </div>
+
+    <div class="card-container">
+        <div class="card" id="card1">
+            <h3>PowerPoint Controller Gestures</h3>
+            <ul>
+                <li><b>All Fingers Up</b>: Next Slide</li>
+                <li><b>Thumb Up</b>: Previous Slide</li>
+                <li><b>Index and Middle Fingers Up</b>: Zoom In</li>
+                <li><b>Index Finger Up</b>: Zoom Out</li>
+                <li><b>Thumb and Index Finger Up</b>: Start Presentation</li>
+                <li><b>Index, middle, and ring fingers up, with the thumb and little finger down</b>: Stop Presentation</li>
+            </ul>
+        </div>
+        <div class="card" id="card2">
+            <h3>Mouse Gestures</h3>
+            <ul>
+                <li><b>Index and Middle Finger up</b>: Simulates Mouse Cursor.</li>
+                <li><b>Index Finger Down and Middle Finger Up</b>: Left Click</li>
+                <li><b>Index Finger Up and Middle Finger Down</b>: Right Click</li>
+                <li><b>Vertical Scroll with Pinch</b>: Adjust Volume Level</li>
+            </ul>
+        </div>
+        <div class="card" id="card3">
+            <h3>Paint Gestures</h3>
+            <ul>
+                <li><b>Pinch Gesture with index tip and thumb tip</b>: To select Tool and to draw in canvas</li>
+            </ul>
+        </div>
+        <div class="card" id="card4">
+            <h3>Keyboard Gestures</h3>
+            <ul>
+                <li>Use Pinch Gesture with index tip and thumb tip to select Key In virtual Keyboard.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getAuthToken() {
+            return localStorage.getItem('authToken');
+        }
+    document.addEventListener("DOMContentLoaded", function() {
+            const token = getAuthToken();
+            if (!token) {
+
+                window.location.href = "/login";
+            }
+        });
+    const selectField = document.getElementById('cardSelector');
+    const cards = document.querySelectorAll('.card');
+
+    function typeListItems(listItems, index = 0) {
+        if (index < listItems.length) {
+            const li = listItems[index];
+            li.style.opacity = 1;
+
+            const originalHTML = li.innerHTML;
+            li.innerHTML = "";
+
+            let container = document.createElement("span");
+            li.appendChild(container);
+
+            function typeChar(i) {
+                if (i < originalHTML.length) {
+                    if (originalHTML[i] === "<") {
+                        let tag = "";
+                        while (i < originalHTML.length && originalHTML[i] !== ">") {
+                            tag += originalHTML[i];
+                            i++;
+                        }
+                        tag += ">";
+
+                        if (tag.startsWith("<b>")) {
+                            let boldText = "";
+                            i++;
+                            while (i < originalHTML.length && !originalHTML.startsWith("</b>", i)) {
+                                boldText += originalHTML[i];
+                                i++;
+                            }
+                            i += 4;
+
+                            let boldElement = document.createElement("b");
+                            container.appendChild(boldElement);
+
+                            function typeBold(j) {
+                                if (j < boldText.length) {
+                                    boldElement.innerHTML += boldText[j];
+                                    setTimeout(() => typeBold(j + 1), 50);
+                                } else {
+                                    typeChar(i);
+                                }
+                            }
+                            typeBold(0);
+                            return;
+                        } else {
+                            container.innerHTML += tag;
+                        }
+                    } else {
+                        container.innerHTML += originalHTML[i];
+                    }
+
+                    setTimeout(() => typeChar(i + 1), 50);
+                } else {
+                    typeListItems(listItems, index + 1);
+                }
+            }
+
+            typeChar(0);
+        }
+    }
+
+    function displayCard() {
+        const selectedValue = selectField.value;
+
+        cards.forEach(card => {
+            card.classList.remove('show');
+            card.classList.add('hide');
+        });
+
+        const selectedCard = document.getElementById(`card${selectedValue}`);
+        if (selectedCard) {
+            selectedCard.classList.remove('hide');
+            selectedCard.classList.add('show');
+
+            const listItems = selectedCard.querySelectorAll("ul li");
+            listItems.forEach(li => li.style.opacity = 0);
+
+            setTimeout(() => typeListItems(listItems), 300);
+        }
+    }
+
+    selectField.addEventListener('change', displayCard);
+    displayCard();
+</script>
+
+{% endblock %}

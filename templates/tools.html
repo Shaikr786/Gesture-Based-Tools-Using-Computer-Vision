@@ -1,0 +1,269 @@
+ {% extends "base.html" %}
+    {% block title %}Tools{% endblock %}
+
+    {% block cssfile %}
+<link rel="stylesheet" href="{{ url_for('static', filename='tools.css') }}">
+  {% endblock %}
+{% block content %}
+
+<div class="wrapper-card">
+    <h1>Gesture Based Tools</h1>
+    <div class="container">
+        <div class="card" id="keyboard">
+            <h2>Keyboard</h2>
+            <ul id="keyboard-list">
+                <li><b>This virtual keyboard allows users to type by detecting hand gestures or
+                    finger movements in front of the screen, enabling hands-free text input
+                    and also eliminates the usage of physical keyboard.</b></li>
+                <li>To start the virtual keyboard, click the <b>"Run"</b> button below.</li>
+                <li>To stop the virtual keyboard, click the <b>"Stop"</b> button after the device has started.</li>
+                <li>To learn more about the keyboard, click the <b>"About"</b> button.</li>
+                <li>To learn more about the gestures of this tool, please visit the help page and select <b>"Keyboard"</b> as the tool.</li>
+
+
+            </ul>
+            <button class="run" onclick="startTool('keyboard')" >Run</button>
+            <button onclick="stopTool('keyboard')" class="hidden red">Stop</button>
+            <button class="about" onclick="openModal('keyboard')">About</button>
+        </div>
+        <div class="card" id="mouse">
+            <h2>Mouse</h2>
+            <ul id="mouse-list">
+                <li><b>This virtual mouse enables users to control the cursor and perform clicks by detecting
+                    hand gestures or finger movements in front of the camera and also eliminates the usage of physical mouse device.</b></li>
+                <li>To start the virtual mouse, click the <b>"Run"</b> button below.</li>
+                <li>To stop the virtual mouse, click the <b>"Stop"</b> button after the device has started.</li>
+                <li>To learn more about the mouse, click the <b>"About"</b> button.</li>
+                <li>To learn more about the gestures of this tool, please visit the help page and select <b>"Mouse"</b> as the tool.</li>
+            </ul>
+            <button class="run" onclick="startTool('mouse')" >Run</button>
+            <button onclick="stopTool('mouse')" class="hidden red">Stop</button>
+            <button class="about" onclick="openModal('mouse')">About</button>
+        </div>
+        <div class="card" id="paint">
+            <h2>Paint</h2>
+            <ul id="paint-list">
+                <li><b>Paint allows users to draw and create art by recognizing hand gestures,
+                    translating them into brush strokes on a digital canvas.</b></li>
+                <li>To start the Paint, click the <b>"Run"</b> button below.</li>
+                <li>To stop the Paint, click the <b>"Stop"</b> button after the device has started.</li>
+                <li>To learn more about the Paint, click the <b>"About"</b> button.</li>
+                <li>To learn more about the gestures of this tool, please visit the help page and select <b>"Paint"</b> as the tool.</li>
+            </ul>
+            <button class="run" onclick="startTool('paint')" >Run</button>
+            <button onclick="stopTool('paint')" class="hidden red">Stop</button>
+            <button class="about" onclick="openModal('paint')">About</button>
+        </div>
+        <div class="card" id="ppt_controller">
+            <h2>PPT Controller</h2>
+            <ul id="ppt_controller-list">
+                <li><b>A PPT controller allows users to navigate through presentation slides by detecting hand gestures,
+                    enabling hands-free control during presentations.</b></li>
+                <li>To start the PPT Controller, click the <b>"Run"</b> button below.</li>
+                <li>To stop the PPT Controller, click the <b>"Stop"</b> button after the device has started.</li>
+                <li>To learn more about the PPT Controller, click the <b>"About"</b> button.</li>
+                <li>To learn more about the gestures of this tool, please visit the help page and select <b>"PPT Controller"</b> as the tool.</li>
+            </ul>
+            <button class="run" onclick="startTool('ppt_controller')" >Run</button>
+            <button onclick="stopTool('ppt_controller')" class="hidden red">Stop</button>
+            <button class="about" onclick="openModal('ppt_controller')">About</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal & Overlay -->
+<div id="overlay" class="overlay" onclick="closeModal()"></div>
+<div id="modal" class="modal">
+    <span class="close-btn" onclick="closeModal()">x</span>
+    <h2 id="modal-title"></h2>
+    <div id="modal-content"></div>
+</div>
+<div id="toast" class="toast hidden"></div>
+<script>
+    function showToast(message,error) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.classList.remove("hidden");
+            if(error){
+            toast.style.backgroundColor="red";
+            }
+            toast.classList.add("show");
+
+            setTimeout(() => {
+                toast.classList.remove("show");
+                toast.classList.add("hidden");
+            }, 2000);
+
+
+        }
+    function openModal(toolName) {
+    const toolInfo = {
+        keyboard: [
+            "Virtual Keyboard technology provides an alternative input method by simulating a physical keyboard on a digital interface.",
+            "By utilizing MediaPipe and OpenCV, it detects hand gestures to interact with virtual keys, enhancing accessibility for individuals with mobility limitations.",
+            "This technology offers customizable layouts and gesture recognition, enabling users to input text and commands seamlessly without a physical keyboard",
+            "It finds applications in touch-based devices, assistive technologies, and environments where traditional keyboards are impractical."
+        ],
+        mouse: [
+            "Virtual Mouse technology revolutionizes computer interaction by leveraging MediaPipe and OpenCV for accurate hand gesture detection.",
+            "Through precise hand landmark detection and gesture mapping, users can seamlessly control applications and games using hand movements.",
+            "This technology enhances accessibility for individuals with mobility impairments and finds applications in gaming and virtual reality environments, making computing more intuitive and user-friendly",
+            "Virtual Volume Control technology enables users to adjust audio levels By interpreting hand movements, it provides a convenient and intuitive way to increase or decrease volume levels in digital environments."
+
+        ],
+        paint: [
+            "virtual paint application that uses hand gestures for real-time drawing or sketching on the canvas.",
+            "Hand gesturebased paint application can be implemented using cameras to capture hand movement. To accomplish activities like as tool selection, writing on the canvas, and clearing the canvas, an intangible interface is created and implemented using vision-based real-time dynamic hand gestures.",
+            "The images of the hands are taken with the system's web camera and processed in real time with a single-shot detector model and mediapipe, allowing the machine to communicate with its user in a fraction of a second."
+        ],
+        ppt_controller: [
+            "Making presentations is essential in a lot of facets of life. At some point in your life, whether you're a student, worker, business owner, or employee of an organization, you've probably given presentations.",
+            "Presentations might seem dull at times since you have to use a keyboard or other specialized device to manipulate and alter the slides. Our goal is to enable hand gesture control of the slide display for users.",
+            "A hand gesture-based intelligent presentation system provides an easy way to manipulate or update the slides. During presentations, there are multiple breaks so that the presenter can use the keyboard.",
+            "The goal of the technology is to let users explore and control the slide show with hand gestures."
+        ]
+    };
+
+    document.getElementById('modal-title').textContent = toolName.replace("_", " ").toUpperCase();
+    const modalContent = document.getElementById('modal-content');
+
+    // Clear content before typing starts
+    modalContent.innerHTML = "<ul id='typing-list'></ul>";
+
+    const typingList = document.getElementById('typing-list');
+    const points = toolInfo[toolName] || ["No information available."];
+
+    function typePoint(index) {
+        if (index >= points.length) return; // Stop when all points are typed
+
+        let li = document.createElement("li");
+        typingList.appendChild(li);
+
+        let text = points[index];
+        let charIndex = 0;
+        let cursor = document.createElement("span");
+        cursor.textContent = "|"; // Cursor Symbol
+        cursor.style.animation = "blink 0.5s infinite";
+        li.appendChild(cursor);
+
+        function typeChar() {
+            if (charIndex < text.length) {
+                li.textContent = text.substring(0, charIndex + 1);
+                li.appendChild(cursor);
+                charIndex++;
+                setTimeout(typeChar, 50); // Adjust typing speed
+            } else {
+                cursor.remove(); // Remove cursor after typing finishes
+                setTimeout(() => typePoint(index + 1), 200); // Delay before next point
+            }
+        }
+
+        typeChar();
+    }
+
+    typePoint(0); // Start typing the first point
+
+    document.getElementById('modal').style.display = "block";
+    document.getElementById('overlay').style.display = "block";
+}
+
+// Add blinking cursor effect using CSS
+const style = document.createElement("style");
+style.innerHTML = `
+@keyframes blink {
+    50% { opacity: 0; }
+}
+`;
+document.head.appendChild(style);
+
+    function closeModal() {
+        document.getElementById('modal').style.display = "none";
+        document.getElementById('overlay').style.display = "none";
+    }
+    function getAuthToken() {
+            return localStorage.getItem('authToken');
+        }
+
+        // Redirect if user is not logged in
+        document.addEventListener("DOMContentLoaded", function() {
+            const token = getAuthToken();
+            if (!token) {
+
+                window.location.href = "/login";
+            }
+        });
+
+        // Function to start a tool with token authorization
+        async function startTool(toolName) {
+            const token = getAuthToken();
+            if (!token) {
+                showToast("You must be logged in to use this feature.",true);
+                window.location.href = "/login";
+                return;
+            }
+
+            try {
+                const response = await fetch('/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ tool_name: toolName })
+                });
+
+                const data = await response.json();
+
+
+
+                if (response.ok) {
+                const toast = document.getElementById("toast");
+                toast.style.backgroundColor="#28a745";
+                showToast(data.message,false);
+                document.querySelector(`#${toolName} .red`).classList.remove('hidden');
+
+                }
+                else{
+                showToast(data.message,true);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                showToast("An error occurred while starting the tool.",true);
+            }
+        }
+
+        // Function to stop a tool with token authorization
+        async function stopTool(toolName) {
+            const token = getAuthToken();
+            if (!token) {
+                showToast("You must be logged in to use this feature.",true);
+                window.location.href = "/login";
+                return;
+            }
+
+            try {
+                const response = await fetch('/stop', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ tool_name: toolName })
+                });
+
+                const data = await response.json();
+
+
+                if (response.ok) {
+                showToast(data.message,true);
+                    document.querySelector(`#${toolName} .red`).classList.add('hidden');
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                showToast("An error occurred while stopping the tool.",true);
+            }
+        }
+
+</script>
+{% endblock %}
+
